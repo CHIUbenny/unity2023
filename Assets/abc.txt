@@ -1,0 +1,1 @@
+{"sLevel":"Boss","fHp":100.0,"fMp":10.0,"iLV":2,"pos":{"x":1.0,"y":1.0,"z":1.0},"iItems":[1,2,1],"pDatas":[{"sName":"補血藥","fAddHp":10.0},{"sName":"強力補血藥","fAddHp":100.0},{"sName":"毒藥","fAddHp":-100.0}],"npcdict":[{"fHp":50.0,"iBuffers":[1,2]},{"fHp":80.0,"iBuffers":[1,3]}]}
