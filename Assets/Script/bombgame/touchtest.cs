@@ -55,11 +55,8 @@ using UnityEngine;
                         {
                             rigidbodies.AddExplosionForce(explosionForce * multiplier, transform.position, r, 1 * explosionForce, ForceMode.Impulse);
                         }
-
-                
                         cube.SetActive(false);
                         disappear = true;
-                
                 }
             }
 

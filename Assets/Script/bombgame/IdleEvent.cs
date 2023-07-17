@@ -55,10 +55,10 @@ public class IdleEvent : MonoBehaviour
         else { Destroy(gameObject); }
     }
 
-    private IEnumerator NoMove()
+    private IEnumerator NoMove(float time)
     {
         noMove = true;
-        yield return new WaitForSeconds(1.5f);
+        yield return new WaitForSeconds(time);
         
         if (Hp > 0) { noMove = false; }
     }
@@ -218,7 +218,7 @@ public class IdleEvent : MonoBehaviour
     {
         if (collision.gameObject.tag == "Bomb")
         {
-            StartCoroutine(NoMove());
+            StartCoroutine(NoMove(1.5f));
             animator.SetTrigger("Injuried");
             rb.AddRelativeForce(bomb*bombPower,ForceMode.VelocityChange) ;
             instBomb.count--;
@@ -229,7 +229,7 @@ public class IdleEvent : MonoBehaviour
         {
             
             animator.SetTrigger("Injuried");
-            StartCoroutine(NoMove());
+            StartCoroutine(NoMove(1.5f));
             startPosition();
             ModifyHp(-2); 
         }
@@ -247,12 +247,13 @@ public class IdleEvent : MonoBehaviour
             win = true;
             UImanger.Instance.Task.text = "You Win";
             animator.SetBool("win", win);
+            StartCoroutine(NoMove(3f));
             StartCoroutine(wintime());
         }
     }
     private IEnumerator wintime()
     {
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(3f);
         win = false;    
         animator.SetBool("win", win);
         UImanger.Instance.NextLevel();

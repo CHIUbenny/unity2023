@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3820414292112158325}
   - component: {fileID: 3820414292112158324}
   m_Layer: 7
-  m_Name: bomb2
+  m_Name: treebomb1
   m_TagString: Bombx
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
