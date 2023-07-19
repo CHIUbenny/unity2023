@@ -36,10 +36,6 @@ public class instBomb : MonoBehaviour
         
         
         bomb = r.LoadAllbomb("testbomb1/BombPfb");
-        
-        //r.Loadbomb("testbomb1/BombPfb/Bomb1");
-
-
         Debug.Log("bomb 陣列數目" + bomb.Length);
         bombx = r.LoadAllbomb("testbomb1/BombWallPfb");
         Debug.Log("bomb 陣列數目" + bombx.Length);

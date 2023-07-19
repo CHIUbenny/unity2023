@@ -14,9 +14,19 @@ public class Resourcetest
         Object[] bomb = Resources.LoadAll(sName);
         return bomb ;
     }
-     public Object Loadbomb(string sName)
+     public Object LoadObject(string sName)
     {
         Object o = Resources.Load(sName);
         return o;
     }
-}
+    public IEnumerator LoadGameObjectAsync(string sName, System.Action<Object> act)
+    {
+        ResourceRequest rr = Resources.LoadAsync(sName);
+        yield return rr;
+
+        if (rr.isDone && rr.asset != null)
+        {
+            act(rr.asset);
+        }
+    }
+  }

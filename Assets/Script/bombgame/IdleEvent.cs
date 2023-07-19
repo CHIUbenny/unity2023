@@ -21,6 +21,7 @@ public class IdleEvent : MonoBehaviour
     public float bombPower = 30f;
     public Vector3 bomb ;
     private Vector3 Ori;
+    private Quaternion Orate;
     private float moveTime = 0;
     private float RunningStart= 1.2f;
     private Vector3 playerMove;
@@ -73,6 +74,7 @@ public class IdleEvent : MonoBehaviour
         Hp = 10;
         MaxHp = 10;
         Ori = transform.position;
+       Orate = transform.rotation;
         noMove = false;
        
         win = false;
@@ -230,7 +232,7 @@ public class IdleEvent : MonoBehaviour
             
             animator.SetTrigger("Injuried");
             StartCoroutine(NoMove(1.5f));
-            startPosition();
+            startPosition(1);
             ModifyHp(-2); 
         }
         if(collision.gameObject.tag == "tonic") 
@@ -256,11 +258,17 @@ public class IdleEvent : MonoBehaviour
         yield return new WaitForSeconds(3f);
         win = false;    
         animator.SetBool("win", win);
+        startPosition(2);
         UImanger.Instance.NextLevel();
     }
-    public void startPosition()
+    public void startPosition(int sceneslevel)
     {
-        transform.localPosition = Ori;
+        Vector3[] levelposition = new Vector3[2];
+        Quaternion[] levelrotation = new Quaternion[2];
+        levelposition[0] = Ori; levelposition[1] = new Vector3(11f,0,91f);
+        levelrotation[0]=Orate; levelrotation[1]=new Quaternion(0,100f,0,0);
+        transform.localPosition = levelposition[sceneslevel-1];
+        transform.localRotation= levelrotation[sceneslevel-1];
     }
 
 }

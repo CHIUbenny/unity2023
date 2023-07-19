@@ -60,7 +60,7 @@ public class UImanger : MonoBehaviour
        IdleEvent.Instance().ModifyHp(10);
         gameover.SetActive(false);
         replaybutton.SetActive(false);
-        IdleEvent.Instance().startPosition();
+        IdleEvent.Instance().startPosition(1);
         IdleEvent.noMove = false;
         Start();
 

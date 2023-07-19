@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class maincamera : MonoBehaviour
 {
+    public static maincamera Instance;
     public float smooth = 3f;       // カメラモーションのスムーズ化用変数
     Transform standardPos;          // the usual position for the camera, specified by a transform in the game
     Transform frontPos;         // Front Camera locater
@@ -13,7 +14,18 @@ public class maincamera : MonoBehaviour
     // スムーズに繋がない時（クイック切り替え）用のブーリアンフラグ
     bool bQuickSwitch = false;  //Change Camera Position Quickly
     bool x = false;
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
 
+            DontDestroyOnLoad(gameObject);
+
+
+        }
+        else { Destroy(gameObject); }
+    }
     void Start()
     {
         // 各参照の初期化
