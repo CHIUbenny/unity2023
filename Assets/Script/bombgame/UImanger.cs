@@ -12,6 +12,7 @@ public class UImanger : MonoBehaviour
     public GameObject gameover;
     public Text Task;
     public Image hpBer;
+    private GameObject menu;
     
     private void Awake()
     {
@@ -27,6 +28,8 @@ public class UImanger : MonoBehaviour
     void Start()
     {
         Task.text = "任務找到寶劍";
+        menu = GameObject.Find("menu");
+        menu.SetActive(!menu.activeInHierarchy);
     }
 
     // Update is called once per frame
@@ -57,24 +60,33 @@ public class UImanger : MonoBehaviour
     public void Replay()
     {
         SceneManager.LoadScene("testbomb");
-       IdleEvent.Instance().ModifyHp(10);
+        IdleEvent.Instance().ModifyHp(10);
         gameover.SetActive(false);
         replaybutton.SetActive(false);
         IdleEvent.Instance().startPosition(1);
         IdleEvent.noMove = false;
+        IdleEvent.Instance().wea = false;
+        IdleEvent.Instance().weapon.SetActive(IdleEvent.Instance().wea);
         Start();
 
     }
     public void NextLevel()
     {
        
-        Task.text = "第二關開始";
+        Task.text = "第二關開始"+"\n殺掉所有敵人";
         SceneManager.LoadScene("testbomb2");
-
+        IdleEvent.Instance().wea = true;
+        IdleEvent.Instance().weapon.SetActive(IdleEvent.Instance().wea);
+        IdleEvent.Instance().startPosition(2);
     }
     public void OnQuit()
     {
         Application.Quit();
+    }
+    public void Menu()
+    {
+        
+        menu.SetActive(!menu.activeInHierarchy);
     }
 
 }

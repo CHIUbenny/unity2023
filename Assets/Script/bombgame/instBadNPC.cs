@@ -23,9 +23,9 @@ public class instBadNPC : MonoBehaviour
     void Start()
     {
         badNPCObject = r.LoadObject("testbomb2/badnpc")as GameObject;
-        objectpool.Instance().Initgameobjectpool(50,badNPCObject);
+        objectpool.Instance().Initgameobjectpool(10,badNPCObject);
 
-
+        GenerateBadnpc(Objectnum);
 
        
     }
@@ -33,9 +33,22 @@ public class instBadNPC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.Space))
+
+      
+            
+        
+    }
+    public void Removebadnpc(GameObject go)
+    {
+        objectpool pool = objectpool.Instance();
+        for(int i=0;i<badNPC.Count;i++) 
         {
-            GenerateBadnpc(Objectnum);
+            GameObjData objData = badNPC[i];
+            if(objData.gobj==go)
+            {
+                badNPC.RemoveAt(i);
+                pool.UnLoadObjFromPool(objData);
+            }
         }
     }
     private void GenerateBadnpc(int num)
