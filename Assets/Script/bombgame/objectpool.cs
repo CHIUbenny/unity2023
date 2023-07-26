@@ -13,25 +13,36 @@ public class ListObjData
     public Object objdata;
     public List<GameObjData> OLdata;
 }
+
 public class objectpool : MonoBehaviour
 {
     private static objectpool gameManager = null;
     public static objectpool Instance() { return gameManager; }
 
-    
+    public class BNPCBarData
+    {
+        public GameObject sourceTarget;
+        public BNPCbar bar;
+    }
+    public Camera mainCamera;
+    public GameObject uibar;
     private ListObjData listObj;
+    private List<BNPCBarData> barlist = new List<BNPCBarData>();
+    public Transform UIbargroup;
     private void Awake()
     {
         gameManager = this;       
     }
-    public void Initgameobjectpool(int count,Object obj)
+    public void Initgameobjectpool(int count,Object[] obj)
     {
         listObj = new ListObjData();
-        listObj.objdata = obj;
+        //listObj.objdata = obj;
         listObj.OLdata = new List<GameObjData>();
         for(int i = 0; i < count;i++)
         {
-            GameObject go = GameObject.Instantiate(obj,transform) as GameObject;
+            int Objectrange = Random.Range(0, obj.Length);
+            listObj.objdata = obj[Objectrange];
+            GameObject go = GameObject.Instantiate(obj[Objectrange],transform) as GameObject;
             GameObjData god = new GameObjData();
             god.gobj= go;
             god.gousing =false;
@@ -39,8 +50,52 @@ public class objectpool : MonoBehaviour
             go.SetActive(god.gousing);
             listObj.OLdata.Add(god);
 
+            /*BNPCBarData bardata = new BNPCBarData();
+            bardata.sourceTarget = null;
+            bardata.bar = Instantiate(uibar).GetComponent<BNPCbar>();
+            bardata.bar.transform.SetParent(UIbargroup);
+            bardata.bar.UpdateBarValue(1.0f);
+            bardata.bar.gameObject.SetActive(false);
+            barlist.Add(bardata);*/
         }
     }
+
+   /* public BNPCbar BarToTarget(GameObject target)
+    {
+        int icount = barlist.Count;
+        for(int i = 0;i < icount;i++)
+        {
+            if (barlist[i].sourceTarget == null)
+            {
+                barlist[i].sourceTarget = target;
+                barlist[i].bar.gameObject.SetActive(true);
+                barlist[i].bar.UpdateBarValue(1f);
+                return barlist[i].bar;
+            }
+        }
+        BNPCBarData bardata = new BNPCBarData();
+        bardata.sourceTarget = null;
+        bardata.bar = Instantiate(uibar).GetComponent<BNPCbar>();
+        bardata.bar.transform.SetParent(UIbargroup);
+        bardata.bar.UpdateBarValue(1.0f);
+        bardata.bar.gameObject.SetActive(false);
+        barlist.Add(bardata);
+        return bardata.bar;
+    }
+    public void RemoveBarByTarget(GameObject target)
+    {
+        int iCount = barlist.Count;
+        for (int i = 0; i < iCount; i++)
+        {
+            if (barlist[i].sourceTarget == target)
+            {
+                barlist[i].sourceTarget = null;
+                barlist[i].bar.gameObject.SetActive(false);
+                //barList.RemoveAt(i);
+                break;
+            }
+        }
+    }*/
     public GameObjData LoadObjFromPool(bool bload)
     {
         int count  = listObj.OLdata.Count;

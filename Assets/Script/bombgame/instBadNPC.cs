@@ -8,13 +8,16 @@ public class instBadNPC : MonoBehaviour
     public static instBadNPC Instance() { return gameManager; }
 
     private GameObject badNPCObject = null;
+    public Object[] badObject;
     private List<GameObjData> badNPC = new List<GameObjData>();
     public int Objectnum;
     Resourcetest r = new Resourcetest();
+    public objectpool barmanger;
+    //private Object[] badgr ;
     // Start is called before the first frame update
     private void Awake()
     {
-        
+        barmanger.mainCamera = Camera.main;
         gameManager = this;
         r.Ingo();
         
@@ -22,12 +25,19 @@ public class instBadNPC : MonoBehaviour
     }
     void Start()
     {
-        badNPCObject = r.LoadObject("testbomb2/badnpc")as GameObject;
-        objectpool.Instance().Initgameobjectpool(10,badNPCObject);
+        badObject = r.LoadAllbomb("testbomb2");
+        Debug.Log("bomb °}¦C¼Æ¥Ø" + badObject.Length);
+  
+           // int Objectrange = Random.Range(0, badObject.Length);
+        //badNPCObject = badObject[Objectrange] as GameObject;
+             
+           
+        
+        //badNPCObject = r.LoadObject("testbomb2/badnpc")as GameObject;
+        objectpool.Instance().Initgameobjectpool(Objectnum, badObject);
 
         GenerateBadnpc(Objectnum);
 
-       
     }
 
     // Update is called once per frame
@@ -75,4 +85,12 @@ public class instBadNPC : MonoBehaviour
            
         }
     }
+    /*public BNPCbar RequestFloatingBar(GameObject target)
+    {
+        return barmanger.BarToTarget(target);
+    }
+    public void ReleaseFlotingBar(GameObject target)
+    {
+        barmanger.RemoveBarByTarget(target);
+    }*/
 }

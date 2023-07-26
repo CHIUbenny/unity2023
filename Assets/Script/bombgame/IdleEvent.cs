@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -40,13 +42,15 @@ public class IdleEvent : MonoBehaviour
     public bool wea=false;
     bool useingweapon;
     public bool isMove;
+    public Transform fire;
 
     // Start is called before the first frame update
 
     public float Hp;
     public float MaxHp;
     // public GameObject hpBer;
-
+    GameObject hitbar;
+    bool openUIbar = false;
     private void Awake()
     {
         if (gameModel == null)
@@ -67,6 +71,9 @@ public class IdleEvent : MonoBehaviour
         yield return new WaitForSeconds(time);
         
         if (Hp > 0) { noMove = false; }
+        if (useingweapon) { weapon.GetComponent<BoxCollider>().enabled = false;
+            //Debug.Log("collider" + weapon.GetComponent<BoxCollider>().enabled);
+        }
     }
     void Start()
     {
@@ -117,13 +124,17 @@ public class IdleEvent : MonoBehaviour
 
             }
             if (useingweapon){
-                animator.SetBool("attack", Input.GetKeyDown(KeyCode.Space));
-                
+                animator.SetBool("attack", Input.GetMouseButtonDown(0));
+                Swordray();
+                if (Input.GetMouseButtonDown(0))
+                {
+                    weapon.GetComponent<BoxCollider>().enabled = true;
+                    //Debug.Log("collider"+ weapon.GetComponent<BoxCollider>().enabled);
+                    StartCoroutine(NoMove(1f));
+                }
+                //weapon.GetComponent<BoxCollider>().enabled = false;
             }
-            
-                
-                
-            
+  
         }
     }
 
@@ -319,5 +330,35 @@ public class IdleEvent : MonoBehaviour
         transform.localPosition = levelposition[sceneslevel-1];
         transform.localEulerAngles= levelrotation[sceneslevel-1];
     }
+    public void Swordray()
+    {
+        RaycastHit hit;
+
+        if (Physics.BoxCast(fire.position,new Vector3(0.5f,0.5f,0.5f), fire.forward,out hit,Quaternion.identity,2f))
+        {
+            Debug.Log("sss" + hit.collider.name);
+            
+            if (hit.transform.GetComponent<badnpc>() != null)
+            {
+                openUIbar = true;
+                hit.transform.GetComponent<badnpc>().UIbar.SetActive(openUIbar);
+                hitbar = hit.transform.GetComponent<badnpc>().UIbar;
+
+                Debug.Log("血量" + hit.transform.GetComponent<badnpc>().UIbar.activeInHierarchy);
+            }
+        }
+        else if(hitbar!=null)
+        { 
+            hitbar.SetActive(false);
+            hitbar=null;
+        }
+        
+        
+    }
+    /*public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(fire.position, new Vector3(0.5f, 0.5f, 0.5f));
+    }*/
 
 }
