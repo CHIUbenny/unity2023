@@ -1,5 +1,7 @@
+using RPGCharacterAnims.Actions;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -28,8 +30,11 @@ public class UImanger : MonoBehaviour
     void Start()
     {
         Task.text = "任務找到寶劍";
-        menu = GameObject.Find("menu");
-        menu.SetActive(!menu.activeInHierarchy);
+        if (menu == null)
+        {
+            menu = GameObject.Find("menu");
+            menu.SetActive(!menu.activeInHierarchy);
+        }
     }
 
     // Update is called once per frame
@@ -40,10 +45,9 @@ public class UImanger : MonoBehaviour
     public IEnumerator Gameover()
     {
         yield return new WaitForSeconds(3f);
-        Task.text = "你被炸死了";
+        Task.text = "你殺死了";
         gameover.SetActive(true);
         replaybutton.SetActive(true);
-
     }
     public void UpdateHpBar()
     {
@@ -58,26 +62,34 @@ public class UImanger : MonoBehaviour
         hpBer.fillAmount = hpmass;
     }
     public void Replay()
-    {
+    {   IdleEvent idle = IdleEvent.Instance();
         SceneManager.LoadScene("testbomb");
-        IdleEvent.Instance().ModifyHp(10);
+        if (idle.Hp == 0)
+        {
+            idle.ModifyHp(10);
+        }
         gameover.SetActive(false);
         replaybutton.SetActive(false);
-        IdleEvent.Instance().startPosition(1);
         IdleEvent.noMove = false;
-        IdleEvent.Instance().wea = false;
-        IdleEvent.Instance().weapon.SetActive(IdleEvent.Instance().wea);
+        idle.wea = false;
+        idle.weapon.SetActive(idle.wea);
+        idle.startPosition(1);
+        if (idle.animator.GetCurrentAnimatorStateInfo(0).IsName("dead")|| idle.animator.GetCurrentAnimatorStateInfo(0).IsName("weaponidle"))
+        {
+            
+            idle.animator.SetBool("weapon", false);
+        }
         Start();
 
     }
     public void NextLevel()
     {
-       
+        IdleEvent idle = IdleEvent.Instance();
         Task.text = "第二關開始"+"\n殺掉所有敵人";
         SceneManager.LoadScene("testbomb2");
-        IdleEvent.Instance().wea = true;
-        IdleEvent.Instance().weapon.SetActive(IdleEvent.Instance().wea);
-        IdleEvent.Instance().startPosition(2);
+        idle.wea = true;
+        idle.weapon.SetActive(idle.wea);
+        idle.startPosition(2);
     }
     public void OnQuit()
     {

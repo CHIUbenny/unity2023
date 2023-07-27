@@ -8,10 +8,11 @@ TagManager:
   - Bomb
   - tonic
   - Bombx
-  - Collide
   - Fire
   - bomb
   - wall
+  - sword
+  - badnpc
   layers:
   - Default
   - TransparentFX

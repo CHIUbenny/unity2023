@@ -1,6 +1,6 @@
-﻿using System.Collections;
+﻿using RPGCharacterAnims.Actions;
+using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -103,10 +103,15 @@ public class IdleEvent : MonoBehaviour
         else if (Hp <= 0)
         {
             Hp = 0;
-            animator.SetBool("dead", true);
             noMove = true;
+            animator.SetBool("dead", true);
+           
+           
             StartCoroutine(UImanger.Instance.Gameover());
-        }else if (Hp > 0) { animator.SetBool("dead", false); }
+        }else if (Hp > 0) { 
+            animator.SetBool("dead", false);
+            
+        }
          UImanger.Instance.UpdateHpBar();
     }
    
@@ -278,29 +283,34 @@ public class IdleEvent : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Bomb")
-        {
-            StartCoroutine(NoMove(1.5f));
-            animator.SetTrigger("Injuried");
-            rb.AddRelativeForce(bomb*bombPower,ForceMode.VelocityChange) ;
-            instBomb.count--;
-            ModifyHp(-1);
-            
-        }
-        if (collision.gameObject.tag == "Bombx") 
-        {
-            
-            animator.SetTrigger("Injuried");
-            StartCoroutine(NoMove(1.5f));
-            startPosition(1);
-            ModifyHp(-2); 
-        }
-        if(collision.gameObject.tag == "tonic") 
-        { 
-            ModifyHp(2);
-            instBomb.count--;
-        }
+        if (Hp!=0f) {
+            if (collision.gameObject.tag == "Bomb")
+            {
+                StartCoroutine(NoMove(1.5f));
+                animator.SetTrigger("Injuried");
+                rb.AddRelativeForce(bomb * bombPower, ForceMode.VelocityChange);
+                instBomb.count--;
+                ModifyHp(-1);
 
+            }
+            if (collision.gameObject.tag == "Bombx")
+            {
+
+                animator.SetTrigger("Injuried");
+                StartCoroutine(NoMove(1.5f));
+                startPosition(1);
+                ModifyHp(-2);
+            }
+            if (collision.gameObject.tag == "tonic")
+            {
+                ModifyHp(2);
+                instBomb.count--;
+            }
+            if (collision.gameObject.tag == "Fire")
+            {
+                ModifyHp(-1);
+            } 
+        }
     }
     private void OnTriggerEnter(Collider other)
     {
@@ -336,7 +346,7 @@ public class IdleEvent : MonoBehaviour
 
         if (Physics.BoxCast(fire.position,new Vector3(0.5f,0.5f,0.5f), fire.forward,out hit,Quaternion.identity,2f))
         {
-            Debug.Log("sss" + hit.collider.name);
+            //Debug.Log("sss" + hit.collider.name);
             
             if (hit.transform.GetComponent<badnpc>() != null)
             {
@@ -344,7 +354,7 @@ public class IdleEvent : MonoBehaviour
                 hit.transform.GetComponent<badnpc>().UIbar.SetActive(openUIbar);
                 hitbar = hit.transform.GetComponent<badnpc>().UIbar;
 
-                Debug.Log("血量" + hit.transform.GetComponent<badnpc>().UIbar.activeInHierarchy);
+                //Debug.Log("血量" + hit.transform.GetComponent<badnpc>().UIbar.activeInHierarchy);
             }
         }
         else if(hitbar!=null)

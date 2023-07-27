@@ -7,17 +7,17 @@ public class instBadNPC : MonoBehaviour
     private static instBadNPC gameManager = null;
     public static instBadNPC Instance() { return gameManager; }
 
-    private GameObject badNPCObject = null;
+    //private GameObject badNPCObject = null;
     public Object[] badObject;
     private List<GameObjData> badNPC = new List<GameObjData>();
     public int Objectnum;
     Resourcetest r = new Resourcetest();
-    public objectpool barmanger;
+    //public objectpool barmanger;
     //private Object[] badgr ;
     // Start is called before the first frame update
     private void Awake()
     {
-        barmanger.mainCamera = Camera.main;
+        //barmanger.mainCamera = Camera.main;
         gameManager = this;
         r.Ingo();
         

@@ -16,30 +16,42 @@ public class badnpc : MonoBehaviour
     public Image bar;
     private int RorL;
     bool x;
-    Transform muzzle;
+    public Transform muzzle;
+    private GameObject bullet;
+    float time = 0f;
+    float ss = 0f;
+    Resourcetest r = new Resourcetest();
     // Start is called before the first frame update
+    private void Awake()
+    {
+        
+        r.Ingo();
+    }
     void Start()
     {
         //nbar = instBadNPC.Instance().RequestFloatingBar(gameObject);
         Oriqua = transform.eulerAngles.y;
         RorL = Random.Range(0, 2);
-        
+        bullet = r.LoadObject("bullet")as GameObject;
         hp = 100f;
         smaterial =  GetComponentInChildren<Renderer>().material;
         Maxhp = 100f;
-        muzzle = GameObject.Find("Muzzle").transform;
+        
+            //InvokeRepeating("MuzzleShoot", 0.5f, 1f); 
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         BadnpcIdle(x);
+        MuzzleRay();
         UIbarupdate();
+        
     }
     public void BadnpcIdle(bool x)
     {
         float a, angle;
-        
         switch (RorL)
         {
 
@@ -50,6 +62,15 @@ public class badnpc : MonoBehaviour
             case 1:
                 x = false;
                 transform.Rotate(0, -rf * Time.deltaTime, 0);
+                break;
+                case 2:
+                transform.Rotate(0, 0, 0);
+                   time += Time.deltaTime;
+                if (time > 2f)
+                {
+                    MuzzleShoot();
+                    time = 0f;
+                }
                 break;
         }
         a = transform.eulerAngles.y;
@@ -110,6 +131,41 @@ public class badnpc : MonoBehaviour
             Debug.Log("aaaa");
             BadnpcDamage(10f);
         }
+    }
+    public void MuzzleRay()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(muzzle.position, muzzle.forward,out hit, 3f))
+        {
+            
+            if (hit.collider.transform.GetComponent<IdleEvent>() != null)
+            {
+                //Debug.Log("sss" + hit.collider.name);
+                RorL = 2;
+            }
+            else
+            {
+               
+                if (RorL == 2)
+                {
+                    
+                    ss +=Time.deltaTime;
+                    if (ss > 0.5f)
+                    {
+                        Debug.Log("aaa");
+                        RorL = Random.Range(0, 2);
+                        ss = 0;
+                    }
+                }
+            }
+
+        }
+ 
+        Debug.DrawRay(muzzle.position, muzzle.forward * 3f,Color.cyan);
+    }
+    public void MuzzleShoot()
+    {
+        Instantiate(bullet, muzzle.position, muzzle.rotation,muzzle);
     }
     /*public void LateUpdate()
     {

@@ -24,10 +24,10 @@ public class objectpool : MonoBehaviour
         public GameObject sourceTarget;
         public BNPCbar bar;
     }
-    public Camera mainCamera;
+   // public Camera mainCamera;
     public GameObject uibar;
     private ListObjData listObj;
-    private List<BNPCBarData> barlist = new List<BNPCBarData>();
+    //private List<BNPCBarData> barlist = new List<BNPCBarData>();
     public Transform UIbargroup;
     private void Awake()
     {
